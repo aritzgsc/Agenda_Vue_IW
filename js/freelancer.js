@@ -1,37 +1,27 @@
-/*!
+/*
  * Start Bootstrap - Freelancer Bootstrap Theme (http://startbootstrap.com)
  * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ * Adaptación de la navegación de la plantilla docente.
  */
-
-// jQuery for page scrolling feature - uses the built-in jQuery easing
-$(function() {
-    $('body').on('click', '.page-scroll a', function(event) {
-        var $anchor = $(this);
+$(function () {
+    $('body').on('click', '.page-scroll a, .navbar-brand', function (event) {
+        var destino = document.getElementById(this.hash.slice(1));
+        if (!destino) return;
+        var menu = $('.navbar-collapse');
+        if (menu.hasClass('in')) menu.collapse('hide');
+        var reducir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var altura = $('.navbar-fixed-top').outerHeight() || 0;
         $('html, body').stop().animate({
-            scrollTop: $($anchor.attr('href')).offset().top
-        }, 1500, 'swing');
+            scrollTop: Math.max(0, $(destino).offset().top - altura)
+        }, reducir ? 0 : 350, 'swing');
         event.preventDefault();
     });
-});
 
-// Floating label headings for the contact form
-$(function() {
-    $("body").on("input propertychange", ".floating-label-form-group", function(e) {
-        $(this).toggleClass("floating-label-form-group-with-value", !! $(e.target).val());
-    }).on("focus", ".floating-label-form-group", function() {
-        $(this).addClass("floating-label-form-group-with-focus");
-    }).on("blur", ".floating-label-form-group", function() {
-        $(this).removeClass("floating-label-form-group-with-focus");
+    $('body').on('input focusin focusout', '.floating-label-form-group input', function () {
+        var grupo = $(this).closest('.floating-label-form-group');
+        grupo.toggleClass('floating-label-form-group-with-value', !!$(this).val());
+        grupo.toggleClass('floating-label-form-group-with-focus', $(this).is(':focus'));
     });
-});
 
-// Highlight the top nav as scrolling occurs
-$('body').scrollspy({
-    target: '.navbar-fixed-top'
-})
-
-// Closes the Responsive Menu on Menu Item Click
-$('.navbar-collapse ul li a').click(function() {
-    $('.navbar-toggle:visible').click();
+    $('body').scrollspy({ target: '.navbar-fixed-top' });
 });

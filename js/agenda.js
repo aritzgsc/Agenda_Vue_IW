@@ -41,6 +41,10 @@ new Vue({
             this.contactos.push(contacto);
             this.nuevo = formularioVacio();
             this.mensaje = 'Contacto añadido.';
+            this.$nextTick(function () {
+                $('#contactForm input').trigger('input');
+                $('#name').focus();
+            });
         },
         solicitarBorrado: function (contacto, event) {
             this.contactoPendiente = contacto.id;
