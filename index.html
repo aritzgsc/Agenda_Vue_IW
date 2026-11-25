@@ -140,33 +140,34 @@
             </div>
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <form name="sentMessage" id="contactForm" @submit.prevent novalidate>
+                    <form name="sentMessage" id="contactForm" @submit.prevent="guardar" novalidate>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label for="name">Nombre</label>
-                                <input type="text" class="form-control" placeholder="Nombre" id="name">
+                                <input type="text" class="form-control" placeholder="Nombre" id="name" v-model="nuevo.nombre" required maxlength="80">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" placeholder="Email" id="email">
+                                <input type="email" class="form-control" placeholder="Email" id="email" v-model="nuevo.email" required maxlength="254">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label for="phone">Teléfono</label>
-                                <input type="tel" class="form-control" placeholder="Número de teléfono" id="phone">
+                                <input type="tel" class="form-control" placeholder="Número de teléfono" id="phone" v-model="nuevo.telefono" required maxlength="25">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <br>
-                        <div id="success"></div>
+                        <p v-if="error" class="text-danger" role="alert">{{ error }}</p>
+                        <div id="success" role="status">{{ mensaje }}</div>
                         <div class="row">
                             <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg" disabled>Añadir</button>
+                                <button type="submit" class="btn btn-success btn-lg">Añadir</button>
                             </div>
                         </div>
                     </form>
