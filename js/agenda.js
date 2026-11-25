@@ -31,6 +31,12 @@ new Vue({
             this.contactos.push({ id: this.siguienteId++, nombre: nombre, email: email, telefono: telefono });
             this.nuevo = { nombre: '', email: '', telefono: '' };
             this.mensaje = 'Contacto añadido.';
+        },
+        eliminar: function (contacto) {
+            if (!window.confirm('¿Eliminar a ' + contacto.nombre + '?')) return;
+            this.contactos = this.contactos.filter(function (item) { return item.id !== contacto.id; });
+            this.error = '';
+            this.mensaje = 'Contacto eliminado.';
         }
     }
 });

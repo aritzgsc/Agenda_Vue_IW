@@ -92,6 +92,7 @@
                     <hr class="star-primary">
                 </div>
             </div>
+            <p role="status" aria-live="polite">{{ mensaje }}</p>
             <div v-if="contactos.length > 0">
             <div class="row">
                 <div class="col-xs-4">
@@ -115,7 +116,7 @@
                     <p>{{ contacto.telefono }}</p>
                 </div>
                 <div class="col-xs-1">
-                      <button type="button" class="btn btn-danger btn-sm" disabled :aria-label="'Eliminar ' + contacto.nombre"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                      <button type="button" class="btn btn-danger btn-sm" @click="eliminar(contacto)" :aria-label="'Eliminar ' + contacto.nombre"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                 </div>
             </div>
             </div>
@@ -164,7 +165,7 @@
                         </div>
                         <br>
                         <p v-if="error" class="text-danger" role="alert">{{ error }}</p>
-                        <div id="success" role="status">{{ mensaje }}</div>
+                        <div id="success"></div>
                         <div class="row">
                             <div class="form-group col-xs-12">
                                 <button type="submit" class="btn btn-success btn-lg">Añadir</button>
