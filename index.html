@@ -10,23 +10,15 @@
     <title>AgendaVue</title>
 
     <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/freelancer.css" rel="stylesheet">
     <link href="css/agenda.css" rel="stylesheet">
 
-    <!-- Custom Fonts -->
+    <!-- Iconos -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
 </head>
 
@@ -73,12 +65,17 @@
         </div>
     </header>
 
+    <p id="inicio-agenda" class="container" role="status">Cargando agenda…</p>
     <main id="agenda" class="container app-main" v-cloak>
-        <p class="notice">Modo local: los contactos desaparecen al recargar.</p>
+        <p v-if="modoLocal" class="notice">Modo local: los contactos desaparecen al recargar.</p>
+        <p v-if="cargando" class="notice" role="status">Conectando con Firebase…</p>
+        <p v-if="errorConexion" class="text-danger" role="alert">{{ errorConexion }}</p>
+        <p v-if="conectado" class="section-intro">Agenda conectada a Firebase.</p>
         <section id="contactos" class="agenda-panel" aria-labelledby="titulo-contactos">
             <h2 id="titulo-contactos">Contactos ({{ contactos.length }})</h2>
             <p class="section-intro">Consulta los contactos que has añadido a tu agenda.</p>
             <p class="status" ref="estadoContactos" tabindex="-1" role="status" aria-live="polite">{{ mensaje }}</p>
+            <p v-if="errorBorrado" class="text-danger" role="alert">{{ errorBorrado }}</p>
             <table v-if="contactos.length" class="table contact-table">
                 <thead>
                     <tr>
@@ -98,18 +95,18 @@
                                 <div class="delete-buttons" @keydown.esc.stop.prevent="contactoPendiente === contacto.id && cancelarBorrado($event)">
                                     <button v-if="contactoPendiente !== contacto.id" type="button"
                                             class="btn btn-default delete-icon delete-start"
-                                            @click="solicitarBorrado(contacto, $event)"
+                                            @click="solicitarBorrado(contacto, $event)" :disabled="bloqueado"
                                             :aria-label="'Eliminar ' + contacto.nombre" title="Eliminar contacto">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </button>
                                     <template v-else>
                                         <button type="button" class="btn btn-danger delete-icon delete-confirm"
-                                                @click="eliminar(contacto)"
+                                                @click="eliminar(contacto)" :disabled="bloqueado"
                                                 :aria-label="'Confirmar eliminación de ' + contacto.nombre" title="Confirmar eliminación">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
                                         <button type="button" class="btn btn-default delete-icon delete-cancel"
-                                                @click="cancelarBorrado($event)"
+                                                @click="cancelarBorrado($event)" :disabled="bloqueado"
                                                 :aria-label="'Cancelar eliminación de ' + contacto.nombre" title="Cancelar eliminación">
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </button>
@@ -120,7 +117,7 @@
                     </tr>
                 </tbody>
             </table>
-            <p v-else class="empty">No se ha encontrado ningún contacto.</p>
+            <p v-else-if="!cargando && !errorConexion" class="empty">No se ha encontrado ningún contacto.</p>
         </section>
 
         <section id="nuevo" class="agenda-panel" aria-labelledby="titulo-nuevo">
@@ -130,22 +127,22 @@
                 <div class="row">
                     <div class="form-group col-sm-6">
                         <label for="name">Nombre</label>
-                        <input id="name" class="form-control" type="text" v-model="nuevo.nombre"
+                        <input id="name" class="form-control" type="text" :disabled="bloqueado" v-model="nuevo.nombre"
                                autocomplete="name" maxlength="80" required>
                     </div>
                     <div class="form-group col-sm-6">
                         <label for="email">Email</label>
-                        <input id="email" class="form-control" type="email" v-model="nuevo.email"
+                        <input id="email" class="form-control" type="email" :disabled="bloqueado" v-model="nuevo.email"
                                autocomplete="email" maxlength="254" required>
                     </div>
                     <div class="form-group col-xs-12">
                         <label for="phone">Teléfono</label>
-                        <input id="phone" class="form-control" type="tel" v-model="nuevo.telefono"
+                        <input id="phone" class="form-control" type="tel" :disabled="bloqueado" v-model="nuevo.telefono"
                                autocomplete="tel" maxlength="25" required>
                     </div>
                 </div>
                 <p v-if="error" class="text-danger" role="alert">{{ error }}</p>
-                <button class="btn btn-success" type="submit">Añadir contacto</button>
+                <button class="btn btn-success" type="submit" :disabled="bloqueado">Añadir contacto</button>
             </form>
         </section>
     </main>
@@ -183,6 +180,8 @@
 
     <!-- Vue -->
     <script src="js/vue.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase.js"></script>
     <script src="js/agenda.js"></script>
 
 </body>

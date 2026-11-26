@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/contacts/{contactId} {
+      function esDueno() { return request.auth != null && request.auth.uid == uid; }
+      function datosValidos() {
+        return request.resource.data.keys().hasOnly(['nombre', 'email', 'telefono'])
+          && request.resource.data.keys().hasAll(['nombre', 'email', 'telefono'])
+          && request.resource.data.nombre is string && request.resource.data.nombre.size() > 0 && request.resource.data.nombre.size() <= 80
+          && request.resource.data.email is string && request.resource.data.email.size() > 3 && request.resource.data.email.size() <= 254
+          && request.resource.data.telefono is string && request.resource.data.telefono.size() >= 6 && request.resource.data.telefono.size() <= 25;
+      }
+      allow get, list, delete: if esDueno();
+      allow create: if esDueno() && datosValidos();
+      allow update: if false;
+    }
+  }
+}
