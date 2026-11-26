@@ -16,7 +16,7 @@ body.index {
     padding-top: 72px;
     background: var(--paper);
     color: var(--ink);
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family: system-ui, 'Segoe UI', sans-serif;
     font-size: 16px;
     line-height: 1.55;
 }
@@ -151,7 +151,7 @@ body.index .btn {
 
 body.index .btn-success {
     background: var(--green);
-    border-color: var(--green);
+    border-color: transparent;
     color: white;
 }
 
@@ -315,14 +315,14 @@ body.index .delete-actions .delete-start:focus {
 
 body.index .delete-actions .delete-confirm {
     background: #a52e37;
-    border-color: #a52e37;
+    border-color: transparent;
     color: #fff;
 }
 
 body.index .delete-actions .delete-confirm:hover:not(:disabled),
 body.index .delete-actions .delete-confirm:focus {
     background: #85222b;
-    border-color: #85222b;
+    border-color: transparent;
     color: #fff;
 }
 
