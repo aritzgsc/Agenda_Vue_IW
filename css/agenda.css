@@ -1,0 +1,356 @@
+/* Personalización de AgendaVue sobre Bootstrap y la plantilla Freelancer. */
+:root {
+    --ink: #102b25;
+    --green: #19483b;
+    --lime: #d9ff6d;
+    --paper: #f6f7f1;
+    --line: #d9e2d7;
+    --muted: #526c61;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+body.index {
+    padding-top: 72px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+}
+
+body.index .container {
+    max-width: 1060px;
+}
+
+body.index h1,
+body.index h2,
+body.index .navbar {
+    font-family: inherit;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+body.index .navbar-fixed-top {
+    background: var(--ink);
+    padding: 10px 0;
+    border: 0;
+    min-height: 72px;
+}
+
+body.index .navbar-brand {
+    color: white;
+    font-size: 22px;
+}
+
+body.index .navbar-nav>li>a {
+    color: white;
+    font-size: 15px;
+}
+
+body.index .navbar-nav>li>a:hover,
+body.index .navbar-nav>.active>a {
+    color: var(--lime);
+    background: transparent;
+}
+
+body.index .hero {
+    padding: 62px 0;
+    background: var(--green);
+    color: white;
+    text-align: left;
+}
+
+body.index .hero .container {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+body.index .hero h1 {
+    font-size: clamp(38px, 6vw, 64px);
+    margin: 10px 0;
+}
+
+body.index p {
+    font-size: 16px;
+}
+
+.app-main {
+    padding-top: 30px;
+    padding-bottom: 38px;
+}
+
+body.index .agenda-panel {
+    background: white;
+    padding: 26px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    margin-bottom: 22px;
+    box-shadow: 0 10px 30px rgba(16, 43, 37, .05);
+}
+
+body.index section h2 {
+    font-size: 25px;
+    margin: 0 0 10px;
+}
+
+.section-intro,
+.empty {
+    color: var(--muted);
+}
+
+.contact-table {
+    table-layout: fixed;
+    margin: 18px 0 0;
+}
+
+.contact-table>thead>tr>th {
+    background: #eff4eb;
+    padding: 12px;
+    border: 0;
+}
+
+.contact-table>tbody>tr>td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+    border-color: var(--line);
+}
+
+.contact-table th:nth-child(2) {
+    width: 30%;
+}
+
+.contact-table th:last-child {
+    width: 112px;
+    text-align: center;
+}
+
+.contact-table .actions {
+    text-align: center;
+}
+
+body.index .form-control {
+    height: 44px;
+    border: 1px solid #9db5a7;
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+body.index label {
+    margin-top: 9px;
+}
+
+body.index .btn {
+    border-radius: 8px;
+    font-weight: 600;
+    min-height: 40px;
+}
+
+body.index .btn-success {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+}
+
+body.index .btn-default {
+    background: #eef3ea;
+    border-color: #c8d6cc;
+    color: var(--ink);
+}
+
+body.index .btn:hover:not(:disabled) {
+    background: var(--ink);
+    color: white;
+}
+
+body.index :focus-visible {
+    outline: 3px solid #91b84e;
+    outline-offset: 3px;
+}
+
+.notice {
+    padding: 14px;
+    margin: 0 0 22px;
+    background: #fff6db;
+    border: 1px solid #dacd91;
+    border-radius: 10px;
+}
+
+.status {
+    color: var(--green);
+    font-weight: 600;
+}
+
+.status:empty {
+    margin: 0;
+}
+
+body.index .text-danger {
+    color: #972b35;
+}
+
+body.index .about {
+    padding: 38px 0;
+    background: #e8f0e4;
+}
+
+body.index .site-footer {
+    background: var(--ink);
+    color: white;
+    padding: 20px 0;
+}
+
+@media (max-width: 767px) {
+    body.index .navbar-fixed-top {
+        padding: 8px 0;
+    }
+
+    body.index .navbar-toggle {
+        background: var(--green);
+    }
+
+    body.index .navbar-toggle .icon-bar {
+        background: white;
+    }
+
+    body.index .hero {
+        padding: 40px 0;
+    }
+
+    body.index .agenda-panel {
+        padding: 17px;
+    }
+
+    .contact-table,
+    .contact-table tbody,
+    .contact-table tr,
+    .contact-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .contact-table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+    }
+
+    .contact-table tr {
+        border-bottom: 1px solid var(--line);
+        padding: 8px 0;
+    }
+
+    .contact-table>tbody>tr>td {
+        padding: 6px 0;
+        border: 0;
+    }
+
+    .contact-table td[data-label]::before {
+        content: attr(data-label) ': ';
+        font-weight: bold;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
+
+body.index .navbar-toggle:focus {
+    outline: 3px solid #91b84e;
+    outline-offset: 3px;
+}
+
+/* Confirmación compacta de borrado dentro de la fila. */
+.delete-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.delete-buttons {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 6px;
+    width: auto;
+}
+
+body.index .delete-actions .delete-icon {
+    display: inline-flex;
+    flex: 0 0 36px;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+    border-radius: 7px;
+    font-size: 17px;
+    line-height: 1;
+    box-shadow: none;
+}
+
+body.index .delete-actions .delete-start {
+    background: #fff5f5;
+    border-color: #edbfc3;
+    color: #a52e37;
+}
+
+body.index .delete-actions .delete-start:hover:not(:disabled),
+body.index .delete-actions .delete-start:focus {
+    background: #fbe5e7;
+    border-color: #a52e37;
+    color: #85222b;
+}
+
+body.index .delete-actions .delete-confirm {
+    background: #a52e37;
+    border-color: #a52e37;
+    color: #fff;
+}
+
+body.index .delete-actions .delete-confirm:hover:not(:disabled),
+body.index .delete-actions .delete-confirm:focus {
+    background: #85222b;
+    border-color: #85222b;
+    color: #fff;
+}
+
+body.index .delete-actions .delete-cancel {
+    background: #f5f6f6;
+    border-color: #d2d8d8;
+    color: #465458;
+}
+
+body.index .delete-actions .delete-cancel:hover:not(:disabled),
+body.index .delete-actions .delete-cancel:focus {
+    background: #e4e8e9;
+    border-color: #a3afb1;
+    color: #26383d;
+}
+
+.delete-actions .btn:focus-visible {
+    outline: 2px solid #287a9e;
+    outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+    .legacy-contact-row {
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
+}
+
+.legacy-contact-row p {
+    overflow-wrap: anywhere;
+}

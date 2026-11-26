@@ -14,73 +14,7 @@
 
     <!-- Custom CSS -->
     <link href="css/freelancer.css" rel="stylesheet">
-    <style>
-        [v-cloak] { display: none; }
-        /* Confirmación compacta de borrado dentro de la fila. */
-        .delete-actions { text-align: right; }
-        .delete-buttons {
-            display: inline-flex;
-            align-items: center;
-            justify-content: flex-start;
-            flex-wrap: nowrap;
-            gap: 6px;
-            width: 78px;
-            vertical-align: middle;
-        }
-        body.index .delete-actions .delete-icon {
-            display: inline-flex;
-            flex: 0 0 36px;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            min-height: 36px;
-            padding: 0;
-            border-radius: 7px;
-            font-size: 17px;
-            line-height: 1;
-            box-shadow: none;
-        }
-        body.index .delete-actions .delete-start {
-            background: #fff5f5;
-            border-color: #edbfc3;
-            color: #a52e37;
-        }
-        body.index .delete-actions .delete-start:hover:not(:disabled),
-        body.index .delete-actions .delete-start:focus {
-            background: #fbe5e7;
-            border-color: #a52e37;
-            color: #85222b;
-        }
-        body.index .delete-actions .delete-confirm {
-            background: #a52e37;
-            border-color: #a52e37;
-            color: #fff;
-        }
-        body.index .delete-actions .delete-confirm:hover:not(:disabled),
-        body.index .delete-actions .delete-confirm:focus {
-            background: #85222b;
-            border-color: #85222b;
-            color: #fff;
-        }
-        body.index .delete-actions .delete-cancel {
-            background: #f5f6f6;
-            border-color: #d2d8d8;
-            color: #465458;
-        }
-        body.index .delete-actions .delete-cancel:hover:not(:disabled),
-        body.index .delete-actions .delete-cancel:focus {
-            background: #e4e8e9;
-            border-color: #a3afb1;
-            color: #26383d;
-        }
-        .delete-actions .btn:focus-visible { outline: 2px solid #287a9e; outline-offset: 2px; }
-        @media (max-width: 767px) {
-            .delete-actions { text-align: left; }
-            .legacy-contact-row { padding: 10px 0; border-bottom: 1px solid #ddd; }
-        }
-        .legacy-contact-row p { overflow-wrap: anywhere; }
-    </style>
+    <link href="css/agenda.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -99,7 +33,7 @@
 <body id="page-top" class="index">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top" aria-label="Navegación de la agenda">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -115,9 +49,6 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
                     <li class="page-scroll">
                         <a href="#contactos">Contactos</a>
                     </li>
@@ -125,7 +56,7 @@
                         <a href="#nuevo">Añadir contacto</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#about">Acerca de...</a>
+                        <a href="#about">Acerca de</a>
                     </li>
                 </ul>
             </div>
@@ -135,172 +66,102 @@
     </nav>
 
     <!-- Header -->
-    <header>
+    <header class="hero">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="intro-text">
-                        <span class="name">AgendaVue</span>
-                        <hr class="star-light">
-                        <span class="skills">Agenda básica en Vue</span>
-                    </div>
-                </div>
-            </div>
+            <h1>Mi agenda</h1>
+            <p>Una agenda sencilla para guardar, consultar y eliminar contactos.</p>
         </div>
     </header>
 
-    <main id="agenda" v-cloak>
-    <!-- Contactos Grid Section -->
-    <section id="contactos">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>Contactos ({{ contactos.length }})</h2>
-                    <hr class="star-primary">
-                </div>
-            </div>
-            <p ref="estadoContactos" tabindex="-1" role="status" aria-live="polite">{{ mensaje }}</p>
-            <p class="text-muted">Modo local: los contactos desaparecen al recargar.</p>
-            <div v-if="contactos.length > 0">
-            <div class="row hidden-xs">
-                <div class="col-xs-12 col-sm-3">
-                    <h4>Nombre</h4>
-                </div>
-                <div class="col-xs-12 col-sm-3">
-                    <h4>Email</h4>
-                </div>
-                <div class="col-xs-12 col-sm-3">
-                    <h4>Teléfono</h4>
-                </div>
-                <div class="col-xs-12 col-sm-3 text-right">
-                    <h4>Acciones</h4>
-                </div>
-            </div>
-            <div class="row legacy-contact-row" v-for="contacto in contactos" :key="contacto.id">
-                <div class="col-xs-12 col-sm-3">
-                    <p>{{ contacto.nombre }}</p>
-                </div>
-                <div class="col-xs-12 col-sm-3">
-                    <p>{{ contacto.email }}</p>
-                </div>
-                <div class="col-xs-12 col-sm-3">
-                    <p>{{ contacto.telefono }}</p>
-                </div>
-                <div class="col-xs-12 col-sm-3">
-                    <div class="delete-actions">
-                        <div class="delete-buttons" @keydown.esc.stop.prevent="contactoPendiente === contacto.id && cancelarBorrado($event)">
-                            <button v-if="contactoPendiente !== contacto.id" type="button"
-                                    class="btn btn-default delete-icon delete-start"
-                                    @click="solicitarBorrado(contacto, $event)"
-                                    :aria-label="'Eliminar ' + contacto.nombre" title="Eliminar contacto">
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            </button>
-                            <template v-else>
-                                <button type="button" class="btn btn-danger delete-icon delete-confirm"
-                                        @click="eliminar(contacto)"
-                                        :aria-label="'Confirmar eliminación de ' + contacto.nombre" title="Confirmar eliminación">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
-                                <button type="button" class="btn btn-default delete-icon delete-cancel"
-                                        @click="cancelarBorrado($event)"
-                                        :aria-label="'Cancelar eliminación de ' + contacto.nombre" title="Cancelar eliminación">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </button>
-                            </template>
-                        </div>
+    <main id="agenda" class="container app-main" v-cloak>
+        <p class="notice">Modo local: los contactos desaparecen al recargar.</p>
+        <section id="contactos" class="agenda-panel" aria-labelledby="titulo-contactos">
+            <h2 id="titulo-contactos">Contactos ({{ contactos.length }})</h2>
+            <p class="section-intro">Consulta los contactos que has añadido a tu agenda.</p>
+            <p class="status" ref="estadoContactos" tabindex="-1" role="status" aria-live="polite">{{ mensaje }}</p>
+            <table v-if="contactos.length" class="table contact-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="contacto in contactos" :key="contacto.id">
+                        <td data-label="Nombre">{{ contacto.nombre }}</td>
+                        <td data-label="Email">{{ contacto.email }}</td>
+                        <td data-label="Teléfono">{{ contacto.telefono }}</td>
+                        <td class="actions">
+                            <div class="delete-actions">
+                                <div class="delete-buttons" @keydown.esc.stop.prevent="contactoPendiente === contacto.id && cancelarBorrado($event)">
+                                    <button v-if="contactoPendiente !== contacto.id" type="button"
+                                            class="btn btn-default delete-icon delete-start"
+                                            @click="solicitarBorrado(contacto, $event)"
+                                            :aria-label="'Eliminar ' + contacto.nombre" title="Eliminar contacto">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </button>
+                                    <template v-else>
+                                        <button type="button" class="btn btn-danger delete-icon delete-confirm"
+                                                @click="eliminar(contacto)"
+                                                :aria-label="'Confirmar eliminación de ' + contacto.nombre" title="Confirmar eliminación">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default delete-icon delete-cancel"
+                                                @click="cancelarBorrado($event)"
+                                                :aria-label="'Cancelar eliminación de ' + contacto.nombre" title="Cancelar eliminación">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p v-else class="empty">No se ha encontrado ningún contacto.</p>
+        </section>
+
+        <section id="nuevo" class="agenda-panel" aria-labelledby="titulo-nuevo">
+            <h2 id="titulo-nuevo">Añadir contacto</h2>
+            <p class="section-intro">Introduce los datos del nuevo contacto.</p>
+            <form id="contactForm" @submit.prevent="guardar" novalidate>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label for="name">Nombre</label>
+                        <input id="name" class="form-control" type="text" v-model="nuevo.nombre"
+                               autocomplete="name" maxlength="80" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="email">Email</label>
+                        <input id="email" class="form-control" type="email" v-model="nuevo.email"
+                               autocomplete="email" maxlength="254" required>
+                    </div>
+                    <div class="form-group col-xs-12">
+                        <label for="phone">Teléfono</label>
+                        <input id="phone" class="form-control" type="tel" v-model="nuevo.telefono"
+                               autocomplete="tel" maxlength="25" required>
                     </div>
                 </div>
-            </div>
-            </div>
-            <div v-else>
-              <div class="row">
-                  <div class="col-xs-12">
-                      <p>No se ha encontrado ningún contacto.</p>
-                  </div>
-              </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Añadir nuevo Section -->
-    <section id="nuevo">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>Añadir contacto</h2>
-                    <hr class="star-primary">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <form id="contactForm" @submit.prevent="guardar" novalidate>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label for="name">Nombre</label>
-                                <input type="text" class="form-control" placeholder="Nombre" id="name" v-model="nuevo.nombre" required maxlength="80">
-
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" placeholder="Email" id="email" v-model="nuevo.email" required maxlength="254">
-
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label for="phone">Teléfono</label>
-                                <input type="tel" class="form-control" placeholder="Número de teléfono" id="phone" v-model="nuevo.telefono" required maxlength="25">
-
-                            </div>
-                        </div>
-                        <br>
-                        <p v-if="error" class="text-danger" role="alert">{{ error }}</p>
-                        <div class="row">
-                            <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg">Añadir</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
+                <p v-if="error" class="text-danger" role="alert">{{ error }}</p>
+                <button class="btn btn-success" type="submit">Añadir contacto</button>
+            </form>
+        </section>
     </main>
 
-    <!-- About Section -->
-    <section class="success" id="about">
+    <section id="about" class="about" aria-labelledby="titulo-about">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>Acerca de...</h2>
-                    <hr class="star-light">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <p>AgendaVue es un proyecto simple en VueJS.</p>
-                </div>
-            </div>
+            <h2 id="titulo-about">Acerca de AgendaVue</h2>
+            <p>Organiza tus contactos en un solo lugar y ten a mano los nombres,
+                correos y teléfonos que necesitas en tu día a día.</p>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="text-center">
-        <div class="footer-above">
-            <div class="container">
-            </div>
-        </div>
-        <div class="footer-below">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        Copyleft &copy; e-ghost 2019
-                    </div>
-                </div>
-            </div>
+    <!-- Basado en la plantilla docente AgendaVue / Freelancer (e-ghost 2019). -->
+    <footer class="site-footer">
+        <div class="container">
+            AgendaVue · Tu agenda de contactos
         </div>
     </footer>
 
@@ -316,10 +177,6 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

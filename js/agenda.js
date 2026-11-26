@@ -42,7 +42,6 @@ new Vue({
             this.nuevo = formularioVacio();
             this.mensaje = 'Contacto añadido.';
             this.$nextTick(function () {
-                $('#contactForm input').trigger('input');
                 $('#name').focus();
             });
         },
